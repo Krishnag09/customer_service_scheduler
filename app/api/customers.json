@@ -1,0 +1,25 @@
+{
+  "customers": {
+    "123-456-7890": {
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@example.com",
+      "vip": true,
+      "phone": "123-456-7890"
+    },
+    "987-654-3210": {
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "email": "jane.smith@example.com",
+      "vip": false,
+      "phone": "987-654-3210"
+    },
+    "555-444-3333": {
+      "firstName": "Alice",
+      "lastName": "Johnson",
+      "email": "alice.johnson@example.com",
+      "vip": true,
+      "phone": "555-444-3333"
+    }
+  }
+}
