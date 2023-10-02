@@ -1,14 +1,6 @@
 {
   "BASE_URL": "http://localhost:5000/",
-  "SECRET_KEY": "",
-  "MAIL_SERVER": "smtp.gmail.com",
-  "MAIL_PORT": "465",
-  "MAIL_USERNAME": "thekrishnagaurav",
-  "MAIL_USE_SSL": "true",
-  "MAIL_PASSWORD": "odljcdklrmxyvwwb",
-  "DATABASE_USER_PASSWORD": "",
-  "JWT_SECRET_KEY": "bed693248c08edf990f89a3dfd8392720798e32a83bfc6c7",
   "TWILIO_ACCOUNT_SID": "ACf3f47b145285510743946e99dd08657d",
-  "TWILIO_DEFAULT_FROM": "+12029334581",
-  "TWILIO_AUTH_TOKEN": "b4b3b2b3b4b3b2b3b4b3b2b3b4b3b2b3"
+  "TWILIO_DEFAULT_FROM": "+18773986163",
+  "TWILIO_AUTH_TOKEN": "45060870fa1e7ce37f809af63c86cca0"
 }

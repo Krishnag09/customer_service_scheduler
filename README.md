@@ -23,11 +23,8 @@ A brief introduction to your project and what it does.
 - load  http://127.0.0.1:5000/api/hello to test response. 
 - project comprises of three endpoints namely provider schedule post, client appointment request post and appoinment validation with expiry.
 - Flask has been used as the python framework.
-- logic for slots comprises of breaking providers schedule into 15 mins slot with index, checking for the same during client appointment request and then removing if available and validated.
-- saving data between schedule request and validation been implemented using a key value pair in redis. 
-- generated JSON token(also sent as part of request validation email) have been used as the key for above. 
-- JSON files have been used to store providers and clients data as temp soln.
-- next step would be to create config files, break up resources into different files before adding tests for  positive/negative scenarios.
+- Redis has been used to store and update various data structures used as queue and counters.
+- For current scope, JSON is used to store customer data. 
 
 ## Installation
 
@@ -40,8 +37,8 @@ python3 -m venv venv
 clone the repo
 
 ```bash
-cd scheduler
-source venv/bin/activate
+cd backend-service-scheduler-kgaurav
+source env/bin/activate
 pip install -r requirements.txt
 flask --app app run --debug
 ```
@@ -53,30 +50,17 @@ You should replace the email credentials in config.json but it should work as is
 
 ## Usage
 
-- add your own email and details to helpers.py
 
-- Use postman with POST as method,  "http://127.0.0.1:5000/api/schedule" with a body like 
-{   
-    "date": "2023-07-28",
-    "start_time": "14:30",
-    "end_time":"18:30",
-    "provider_id":124
+- Use postman with POST as method, for  "http://127.0.0.1:5000/api/checkin" with a body like 
+{
+    "client_phone":"123-456-7890"
 }
-- Use postman with POST as method,  "http://127.0.0.1:5000/api/client_schedule" with a body like 
-{   
-    "date": "2023-07-28",
-    "provider_id":124,
-    "client_id":124,
-    "requested_slot":60
-}
+This checks in the client depending on the type into one of the two lists. 
+- Use postman with GET as method,  "http://127.0.0.1:5000/api/service" to get a service no based on the . 
 
+Two methods next_customer and next_customer_pro can b used to achieve the following processing 
+ - processing all  VIPs before regular
+ - processing VIPS at twice the rate as regular.
 
+ - The application has capability to sms the service no to the customer using Twilio.
 
-# add your own email and details to helpers.py
-# 
-
-# Additional features
-
-## Add a queue update mechanism
-## Add an expected wait time.
-## Send a text when turn arrives
