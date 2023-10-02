@@ -16,14 +16,25 @@ class ServiceScheduler(Resource):
     def post(self):
         client = next_customer() # get the next customer from the queue
         if client: 
-            print(client)
             service_no = generate_service_no(client)
-            print(service_no)
             store_service_no(client, service_no)
-            send_sms(client, service_no)
+            # send_sms(client, service_no)
             return 'Your service number is: ' + service_no
         else:
             return 'Customer not found in the check in list'
+class ServiceSchedulerPro(Resource):
+    def get(self):
+        return 'Hello, World! This is the Pro Scheduler !'
+    def post(self):
+        client = next_customer_pro() # get the next customer from the queue
+        if client: 
+            service_no = generate_service_no(client)
+            store_service_no(client, service_no)
+            # send_sms(client, service_no)
+            return 'Your service number is: ' + service_no
+        else:
+            return 'Customer not found in the check in list'
+    
 class CheckIn(Resource):
     def get(self):
         return 'Hello, World! This is the CheckIn!'

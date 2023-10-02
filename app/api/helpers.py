@@ -89,38 +89,38 @@ def next_customer():
         return "No customers in checkIn queue"
     
 def next_customer_pro():
-    pipe = r.pipeline()
-
     # Check if the counter exists, if not, set it to 0
     if not r.exists('vip_counter'):
-        pipe.set('vip_counter', 0)
+        r.set('vip_counter', 0)
 
-    # Get the counter value and check the length of the VIP list
-    vip_counter = int(pipe.get('vip_counter').decode('utf-8'))
-    vip_length = pipe.llen('phone_vip')
+    # Get the counter value and check the lengths of the lists
+    vip_counter = int(r.get('vip_counter').decode('utf-8'))
+    vip_length = r.llen('phone_vip')
+    reg_length = r.llen('phone_reg')
+
+    # Start a transaction
+    pipe = r.pipeline()
 
     # If conditions are met for VIP, pop a value and increment the counter
     if vip_length > 0 and vip_counter < 2:
         next_customer_vip = pipe.rpop('phone_vip')
         pipe.incr('vip_counter')
-    else:
+    elif reg_length > 0:
         # If conditions are met for regular, pop a value and reset the counter
-        reg_length = pipe.llen('phone_reg')
-        if reg_length > 0:
-            next_customer_reg = pipe.rpop('phone_reg')
-            pipe.set('vip_counter', 0)
+        next_customer_reg = pipe.rpop('phone_reg')
+        pipe.set('vip_counter', 0)
 
     # Execute the transaction
     responses = pipe.execute()
 
+    # Process the results
     # The result of the rpop command for VIP
-    if vip_length > 0 and vip_counter < 2 and responses[-2]:
-        next_customer_vip = responses[-2].decode('utf-8')
+    if vip_length > 0 and vip_counter < 2 and responses[0]:
+        next_customer_vip = responses[0].decode('utf-8')
         return json.dumps(next_customer_vip)
-    elif responses[-1]:  # The result of the rpop command for regular
-        next_customer_reg = responses[-1].decode('utf-8')
+    # The result of the rpop command for regular
+    elif reg_length > 0 and responses[0]:
+        next_customer_reg = responses[0].decode('utf-8')
         return json.dumps(next_customer_reg)
     else:
         return "No customers in queue"
-    
-    
