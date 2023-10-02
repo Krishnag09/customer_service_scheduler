@@ -20,6 +20,20 @@
       "email": "alice.johnson@example.com",
       "vip": true,
       "phone": "555-444-3333"
+    },
+    "987-654-3211": {
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "email": "jane.smith@example.com",
+      "vip": false,
+      "phone": "987-654-3210"
+    },
+    "666-444-3333": {
+      "firstName": "Alice",
+      "lastName": "Johnson",
+      "email": "alice.johnson@example.com",
+      "vip": true,
+      "phone": "666-444-3333"
     }
   }
 }

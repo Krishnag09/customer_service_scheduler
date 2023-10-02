@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, url_for
 from flask_mail import Mail, Message
-import jwt
+import jwt , json
 import datetime
 import redis
 from twilio.rest import Client
@@ -22,17 +22,12 @@ app.config['MAIL_USE_SSL'] = False
 mail = Mail(app)
 
 SECRET_KEY = "test_secret_key"
-
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
-def generate_token(email):
-    # Create a unique token
-    expiration = datetime.datetime.utcnow(
-    ) + datetime.timedelta(minutes=15)  # Token valid for 15 minutes
 
-    token = jwt.encode({'email': email, 'exp': expiration},
-                       SECRET_KEY, algorithm='HS256')
-    return token
+with open('app/api/customers.json', 'r') as json_file:
+    data = json.load(json_file)
+
 
 def generate_service_no(phone_no):
     #Create a sequential service number
@@ -67,21 +62,47 @@ def send_sms(phone_no, service_no):
     else:
         return 'Please enter a valid phone number'
     
-def checkIn(customer):
+def check_in(phone):
     # push_to_queue(phone_no)
-    r_list = r.lrange('queue', 0, -1)
-    p_list = r.lrange('phone_no', 0, -1)
-    if customer.VIP == True:
-        p_list.push(customer.phone_no)
+    customer = data['customers'].get(phone)
+    if customer.get('vip'):
+        r.lpush('phone_vip', phone) # push as the last element the list
+        print("VIP customer checked in", phone)
     else:
-        r_list.push(customer.phone_no)
+        r.lpush('phone_reg', phone)
+        print ("Regular customer checked in", phone)
     return 'You have been checked in'
     
-def getNextCustomer(phone_no, p_list, r_list):
+def next_customer():
     # helps provide the next customer in the queue
-    if p_list is not None:
-        next_customer = p_list.pop()
+    if r.llen('phone_vip') > 0:
+        next_customer = r.rpop('phone_vip') # pop the first element from the list
+        next_customer = next_customer.decode('utf-8')
+        print("VIP customer queued", next_customer)
+        return json.dumps(next_customer)
+        # add all/partial queue empty logic here
+    elif r.llen('phone_reg') > 0:
+        next_customer_2 = r.rpop('phone_reg')
+        next_customer_2 = next_customer_2.decode('utf-8')
+        print ("Regular customer queued", next_customer_2)
+        return json.dumps(next_customer_2)
     else:
-        next_customer = r_list.pop()
-    return next_customer
-
+        return "No customers in queue"
+    
+def next_customer_pro():
+    #process VIP customers at double the rate of regular customers
+    if r.get('vip_counter') is None:
+            r.set('vip_counter', 0)
+    vip_counter = int(r.get('vip_counter').decode('utf-8'))
+    if r.llen('phone_vip') > 0 and vip_counter < 2:
+        next_customer = r.rpop('phone_vip')
+        r.incr('vip_counter')
+        next_customer = next_customer.decode('utf-8')
+        return json.dumps(next_customer)
+    elif r.llen('phone_reg') > 0:
+        next_customer_2 = r.rpop('phone_reg')
+        next_customer_2 = next_customer_2.decode('utf-8')
+        r.set('vip_counter', 0)
+        return json.dumps(next_customer_2)
+    
+    
