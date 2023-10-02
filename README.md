@@ -43,7 +43,6 @@ pip install -r requirements.txt
 flask --app app run --debug
 ```
 
-
 venv might need reactivating using after installing requirements.txt.
 You should replace the email credentials in config.json but it should work as is. 
 
@@ -62,5 +61,5 @@ Two methods next_customer and next_customer_pro can b used to achieve the follow
  - processing all  VIPs before regular
  - processing VIPS at twice the rate as regular.
 
- - The application has capability to sms the service no to the customer using Twilio.
+ - The application has capability to sms the service no to the customer using Twilio. Twilio creddentials might need updating. 
 

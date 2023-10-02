@@ -7,3 +7,4 @@ api = Api(api_bp)
 api.add_resource(HelloWorld, '/hello')
 api.add_resource(ServiceScheduler, '/service')
 api.add_resource(CheckIn, '/checkin')
+
