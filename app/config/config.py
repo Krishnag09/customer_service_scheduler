@@ -1,6 +1,5 @@
 from distutils.command.config import config
 import json
-import configparser
 import os
 
 with open(os.path.join(os.path.dirname(__file__), 'config.json')) as config_file:
@@ -10,7 +9,6 @@ with open(os.path.join(os.path.dirname(__file__), 'config.json')) as config_file
 class Config:
     
     BASE_URL = config.get("BASE_URL")
-
 
 
     # Set  Twilio environment variables for your credentials
