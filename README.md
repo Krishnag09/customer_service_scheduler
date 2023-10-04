@@ -40,6 +40,7 @@ pip install -r requirements.txt
 flask --app app run --debug
 ```
 
+
 venv might need reactivating using after installing requirements.txt.
 You should replace the email credentials in config.json but it should work as is. 
 
@@ -61,5 +62,5 @@ This checks in the client depending on the type into one of the two lists.
 - Use postman with POST as method,  "http://127.0.0.1:5000/api/service" to get a service no based on the . 
 - Use postman with POST as method,  "http://127.0.0.1:5000/api/servicePRO" to get a service no based on the logic #2. 
 
- - The application has capability to sms the service no to the customer using Twilio. Twilio creddentials might need updating. 
+ - The application has capability to sms the service no to the customer using Twilio.
 

@@ -12,6 +12,7 @@ class Config:
 
 
     # Set  Twilio environment variables for your credentials
+    # verify_sid = "VA279c1f534b4943a8e87c6a90dce22e37"
     twilio_account_sid = config.get("TWILIO_ACCOUNT_SID")
     twilio_default_from = config.get("TWILIO_DEFAULT_FROM")
     twilio_auth_token = config.get("TWILIO_AUTH_TOKEN")
