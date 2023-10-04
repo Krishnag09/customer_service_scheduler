@@ -19,9 +19,9 @@ class ServiceScheduler(Resource):
             service_no = generate_service_no(client)
             store_service_no(client, service_no)
             # send_sms(client, service_no)
-            return 'Your service number is: ' + service_no
+            return "Service number for "+ str(client) +"is: "+ str(service_no)
         else:
-            return 'Customer not found in the check in list'
+            return 'No customers found in the check in list'
 class ServiceSchedulerPro(Resource):
     def get(self):
         return 'Hello, World! This is the Pro Scheduler !'

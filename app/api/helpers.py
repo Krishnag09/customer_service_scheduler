@@ -25,7 +25,7 @@ def generate_service_no(phone_no):
         if r.get('service_no') is None:
             r.set('service_no', 0)
         service_no = r.incr('service_no')
-        return "Your service number is: " + str(service_no)
+        return str(service_no)
     except:
         return "Error generating service number, please try again later"
 
@@ -70,7 +70,7 @@ def next_customer():
         print ("Regular customer queued", next_customer_reg)
         return json.dumps(next_customer_reg)
     else:
-        return "No customers in checkIn queue"
+        return None
     
 def next_customer_pro():
     #process VIP customers at double the rate of regular customers
